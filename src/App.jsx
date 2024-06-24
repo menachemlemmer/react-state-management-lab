@@ -4,6 +4,7 @@ const App = () => {
   const [team, setTeam] = useState([]);
   const [money, setMoney] = useState(100);
   const [totalStrength, setTotalStrength] = useState(0);
+  const [totalAgility, setTotalAgility] = useState(0);
   const [zombieFighters, setZombieFighters] = useState([
     {
       name: "Survivor",
@@ -85,12 +86,28 @@ const App = () => {
       setTeam([...team, fighter]);
       setMoney(money - fighter.price);
       setTotalStrength(totalStrength + fighter.strength);
+      setTotalAgility(totalAgility + fighter.agility);
     }
   };
+
+  const handleRemoveFighter = (index) => {
+    const newTeam = [...team];
+    const removedFighter = newTeam.splice(index, 1);
+    setTeam(newTeam);
+    setMoney(money + removedFighter[0].price);
+    setTotalStrength(totalStrength - removedFighter[0].strength);
+    setTotalAgility(totalAgility - removedFighter[0].agility);
+  };
+
   return (
     <>
       <h1 className="px-4 py-8 text-4xl font-bold">Zombie Fighters</h1>
       <h2 className="px-4 py-4 text-2xl font-bold">Money: {money}</h2>
+      <h2 className="px-4 py-4 text-2xl font-bold">
+        Strength: {totalStrength}
+      </h2>
+      <h2 className="px-4 py-4 text-2xl font-bold">Agility: {totalAgility} </h2>
+
       <h2 className="px-4 py-4 text-2xl font-bold">Team</h2>
       <ul className="flex flex-wrap justify-start">
         {team.length === 0 && (
@@ -106,6 +123,12 @@ const App = () => {
             <p>price: {fighter.price}</p>
             <p>strength: {fighter.strength}</p>
             <p>agility: {fighter.agility}</p>
+            <button
+              className="rounded bg-black px-4 py-2 text-white"
+              onClick={() => handleRemoveFighter(index)}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
